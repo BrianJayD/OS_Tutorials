@@ -1,0 +1,15 @@
+#!/bin/bash
+
+ARG1="$1"
+arg2=0
+
+if [ $ARG1 = 'loop' ]; then 
+	echo "loop"
+	rm *.log
+	for i in {1..5}; do
+		echo $arg2 >> count.log
+		let arg2=arg2+$i
+	done
+fi
+echo $(ps) > processes.log
+echo $arg2 >> count.log

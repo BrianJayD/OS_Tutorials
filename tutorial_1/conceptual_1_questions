@@ -1,0 +1,29 @@
+a UNIX based operating system of Linux configured on your system, embedded systems uses Linux often and Linux servers. Popular because free and open source.
+
+free or open source software means it was released using an open license, this is significant because anyone can contribute and publish changes to git etc. (although they have to be accepted)
+
+an open source license is anyone can contribute to bugs or features
+
+apache open source license / GNU public license / FOSS
+
+stdin  (0)  standard in stream
+stdout	(1) standard out stream
+stderr	(2) standard err stream
+
+
+mkdir tutorials
+touch tutorial1
+cp tutorial1 tutorial_1
+rm tutorial1
+
+cd ~ && ln -s ~/work/tutorials/tutorial_1 shortcut_name
+
+grep -r "stdin" ~/work/tutorials/
+
+find ~/ -name "tutorial*" >> 2>&1 errors.log 
+Or
+find ~/ -name "tutorial*" 2> errors.log
+For error stream only  
+
+
+
