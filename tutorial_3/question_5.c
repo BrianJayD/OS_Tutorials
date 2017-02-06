@@ -1,3 +1,25 @@
+/*Building upon the previous questions you will create a marking system for
+professors at UOIT.
+- Structs can be used the same as any other data type in C, instead of
+having two arrays for the grades and student ids create a struct called
+grade​ that contains two integers: ​ student_id​ and ​ mark​ .
+Create a function ​ grade_students​ which takes the following arguments: a
+pointer​ to the ​ grade​ struct called ​ grades​ , ​ ​ and an integer ​ num_students.
+The function returns ​ void ​ and does the following:
+- Opens the file ​ grades.txt​ in ​ write​ mode
+- Using the ​ num_students​ parameter iterates through all of the
+grade structs pointed to by the ​ grades​ parameter (remember
+arrays are pointers, you can treat pointers like arrays).
+- For each​ grade structure ​ adds​ the ​ mark ​ member of the struct to a
+variable called ​ sum​ that holds the sum of all student’s grades.-
+- For each​ grade structure​ write​ to the file ​ grades.txt​ the ​ student id
+and the ​ mark​ on a single line.
+After adding every student's​ mark​ to the ​ sum​ variable, calculate
+the ​ average​ (mean)​ ​ and ​ standard deviation​, you will need to use
+<math.h>​ don’t forget when you compile to add -lm
+Write​ to the file ​ grades.txt the average​ and​ standard deviation
+that you calculated*/
+
 // Includes
 #include <assert.h>
 #include <math.h>
