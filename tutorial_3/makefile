@@ -5,7 +5,8 @@
 CC = clang
 OBJECTS := $(subst .c,.o,$(SOURCES))
 BIN = question_1 question_2 question_3 question_4 question_5
-# LIBS := -lm 
+OUTPUT = grades.txt
+# LIBS := -lm
 LDFLAGS := -lm
 
 
@@ -13,7 +14,7 @@ LDFLAGS := -lm
   # compiler flags:
   #  -g    adds debugging information to the executable file
   #  -Wall turns on most, but not all, compiler warnings
-  #  -Wextra 
+  #  -Wextra
 CFLAGS  = -Wall -Wextra -std=gnu99
 
 # shiet -std=c99 changed to -std=gnu99 <----
@@ -24,12 +25,11 @@ default : all
 all : question_1 question_2 question_3 question_4 question_5
 
 % : %.o
-	$(CC) $(CFLAGS) $< $(LIBS) -o $@ 
+	$(CC) $(CFLAGS) $< $(LIBS) -o $@
 
 %.o : %.c
-	$(CC) $(CFLAGS) -c $< 
+	$(CC) $(CFLAGS) -c $<
 
 
 clean :
-	rm -f $(OBJECTS) $(BIN) *.o *~
-
+	rm -f $(OBJECTS) $(BIN) $(OUTPUT) *.o *~
