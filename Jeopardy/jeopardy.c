@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "players.h"
 #include "questions.c"
 #include <math.h>
 #include <time.h>
+#include <stdbool.h>
 
 #define BUFFER_LEN 256
 
@@ -60,21 +60,43 @@ int main(int argc, char const *argv[])
 	//EVERYTHING BELOW THIS LINE DOES NOT RUN
 
 
-	//initialize_game();
+	initialize_game();
 	startPlayer = rand() % players;
 	turn = startPlayer;
 	char catSelect[256];
+	
 	printf("%s starts.\n", playerSetup[turn].name);
-	printf("%s, please enter in a category and price: ", playerSetup[turn].name);
-	fgets(catSelect, BUFFER_LEN, stdin);
-	char *category = strtok(catSelect, " ");
-	char *price = strtok(NULL, " ");
-	printf("You have chosen %s for %s\n", category, price);
 
+	do 
+	{
+		printf("%s, please enter in a category and price: ", playerSetup[turn].name);
+		fgets(catSelect, BUFFER_LEN, stdin);
+		char *category = strtok(catSelect, " ");
+		int price = atoi(strtok(NULL, " "));
+		printf("You have chosen %s for %i\n", category, price);
+		displaythequestion(category, price);
+		
 
+		turn++; 
+		
 
-	//displaythequestion(catSelect);
+		if (turn > players)
+		{
+			turn = 0;
+		}
 
+		printf ("%s, it is now your turn\n", playerSetup[turn].name);
+
+	} while (!isGameFinished());
+
+	printf ("The game is over! Here are the scores:\n ");
+
+	for (int i = 0; i < players; i++)
+	{
+		printf("%s %i\n", playerSetup[i].name, playerSetup[i].score);
+	}
 
 	return 0;
 }
+
+
