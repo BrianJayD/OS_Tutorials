@@ -16,17 +16,15 @@ struct players
 
 
 int startScore = 0;
+int players;
+int startPlayer = 0;
+int turn;
 
 int main(int argc, char const *argv[])
 {
-	int players;
-	int startPlayer = 0;
-	int turn;
-	
-
 	printf("Welcome to Jeopardy!");
 
-	do 
+	do
 	{
 		printf("How many players? (2-4): ");
 		scanf("%d", &players);
@@ -40,29 +38,40 @@ int main(int argc, char const *argv[])
 
 	struct players playerSetup[players];
 	char playerName[BUFFER_LEN];
-	int count = 1;
-	
+	int count = 0;
 
-	for (int i = 0; i < players; i++)
-	{
+
+	for (int i = 0; i < players; i++) {
+		count++;
 		printf("Player %d please enter in your name: ", count);
 		scanf("%s", playerName);
 		printf("Welcome %s!\n", playerName);
 
 		playerSetup[i].name = playerName;
 		playerSetup[i].score = startScore;
-		count++;
 	}
 
-	initialize_game();
+	// This is to consume the newline character from scanf in order to use fgets
+	int c;
+	do{
+    c = getchar();
+	}while(c != EOF && c != '\n');
+
+	//EVERYTHING BELOW THIS LINE DOES NOT RUN
 
 
+	//initialize_game();
 	startPlayer = rand() % players;
 	turn = startPlayer;
-	char catSelect[BUFFER_LEN];
+	char catSelect[256];
 	printf("%s starts.\n", playerSetup[turn].name);
 	printf("%s, please enter in a category and price: ", playerSetup[turn].name);
-	scanf("%s", catSelect);
+	fgets(catSelect, BUFFER_LEN, stdin);
+	char *category = strtok(catSelect, " ");
+	char *price = strtok(NULL, " ");
+	printf("You have chosen %s for %s\n", category, price);
+
+
 
 	//displaythequestion(catSelect);
 
