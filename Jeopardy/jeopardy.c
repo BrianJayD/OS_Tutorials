@@ -22,9 +22,6 @@ int main(int argc, char const *argv[])
 	int players;
 	int startPlayer = 0;
 	int turn;
-	char input[BUFFER_LEN];
-	char* selection;
-	char space[1] = {" "};
 	
 
 	printf("Welcome to Jeopardy!");
@@ -62,22 +59,13 @@ int main(int argc, char const *argv[])
 
 	startPlayer = rand() % players;
 	turn = startPlayer;
+	char catSelect[BUFFER_LEN];
 	printf("%s starts.\n", playerSetup[turn].name);
 	printf("%s, please enter in a category and price: ", playerSetup[turn].name);
+	scanf("%s", catSelect);
 
+	//displaythequestion(catSelect);
 
-//tokeizer doesnt even begin to work
-		/*for (int i = 0; i < 2; i++)
-		{	
-			fgets(input, BUFFER_LEN, stdin);
-		}
-		selection = strtok(input, space);
-		
-		while (selection != NULL)
-		{
-     		printf("%s\n", selection);
-     		selection = strtok(NULL, space);
-     	}*/
 
 	return 0;
 }
