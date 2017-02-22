@@ -1,8 +1,0 @@
-5. The functions required to create a mutex lock are: init(), and lock()/unlock().
-
-The init() function initializes a mutex to be used by the program and sets up a lock around any critical section of code. 
-
-lock() sets up a lock to ensure that only the current thread using the lock can run its critical section.
-If another peice of code would try to set the lock that's already set, it would have to wait.
-
-unlock() releases the lock from the thread, so that another waiting thread can set it, and run its critical section.
