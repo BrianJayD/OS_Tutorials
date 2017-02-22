@@ -1,0 +1,23 @@
+1)  pthread_create(): creates threads
+    pthread_join(): blocks called thread, joins thread as long as it is created
+    joinable
+    pthread_exit(): terminates thread with option for termination status
+
+2)  Unlike multiple processes, multiple threads can easily share memory between each other and communication between
+    threads is easier than communication between processes.
+
+3)  Threads use less resources than processes and are faster when it comes to creation, execution and switches.
+    Threads are tightly coupled that allow for memory sharing and communication between threads. Processes are
+    loosely coupled, so memory sharing and communication between processes is difficult. Although threads are faster,
+    they cannot handle heavier tasks unlike processes.
+
+4)  Mutual exclusion is when a process is executing its critical section and no other process can be executing
+    their critical section. Critical sections are when processes are writing to files, updating data, changing
+    variables and values etc.
+
+5)  The functions required to create a mutex lock are: init(), and lock()/unlock().
+    The init() function initializes a mutex to be used by the program and sets up a lock around any critical section
+    of code.
+    lock() sets up a lock to ensure that only the current thread using the lock can run its critical section.
+    If another peice of code would try to set the lock that's already set, it would have to wait.
+    unlock() releases the lock from the thread, so that another waiting thread can set it, and run its critical section.
