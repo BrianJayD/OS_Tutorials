@@ -8,14 +8,20 @@
 
 #define BUFFER_LEN 256
 
+struct players
+{
+	char* name;
+	int score;
+};
+
+
+int startScore = 0;
+
 int main(int argc, char const *argv[])
 {
 	int players;
 	int startPlayer = 0;
 	int turn;
-	char input[BUFFER_LEN];
-	char* selection;
-	char space[1] = {" "};
 	
 
 	printf("Welcome to Jeopardy!");
@@ -32,10 +38,10 @@ int main(int argc, char const *argv[])
 		}
 	} while (players < 2 || players > 4);
 
-	char *name[players];
+	struct players playerSetup[players];
 	char playerName[BUFFER_LEN];
 	int count = 1;
-	int score[players];
+	
 
 	for (int i = 0; i < players; i++)
 	{
@@ -43,8 +49,8 @@ int main(int argc, char const *argv[])
 		scanf("%s", playerName);
 		printf("Welcome %s!\n", playerName);
 
-		name[i] = playerName;
-		score[i] = 0;
+		playerSetup[i].name = playerName;
+		playerSetup[i].score = startScore;
 		count++;
 	}
 
@@ -53,22 +59,13 @@ int main(int argc, char const *argv[])
 
 	startPlayer = rand() % players;
 	turn = startPlayer;
-	printf("%s starts.\n", name[turn]);
-	printf("%s, please enter in a category and price: ", name[turn]);
+	char catSelect[BUFFER_LEN];
+	printf("%s starts.\n", playerSetup[turn].name);
+	printf("%s, please enter in a category and price: ", playerSetup[turn].name);
+	scanf("%s", catSelect);
 
+	//displaythequestion(catSelect);
 
-//tokeizer doesnt even begin to work
-		/*for (int i = 0; i < 2; i++)
-		{	
-			fgets(input, BUFFER_LEN, stdin);
-		}
-		selection = strtok(input, space);
-		
-		while (selection != NULL)
-		{
-     		printf("%s\n", selection);
-     		selection = strtok(NULL, space);
-     	}*/
 
 	return 0;
 }
