@@ -58,12 +58,18 @@ void initialize_game(void)
 			
 			setupC1[i].question = cat1Questions[q];
 			setupC1[i].answer = cat1Answers[q];
+			setupC1[i].value = questionValues[q];
+			setupC1[i].isAnswered = wasQuestionAnswered[q];
 
 			setupC2[i].question = cat2Questions[q];
 			setupC2[i].answer = cat2Answers[q];
+			setupC2[i].value = questionValues[q];
+			setupC2[i].isAnswered = wasQuestionAnswered[q];
 
 			setupC3[i].question = cat3Questions[q];
 			setupC3[i].answer = cat3Answers[q];
+			setupC3[i].value = questionValues[q];
+			setupC3[i].isAnswered = wasQuestionAnswered[q];
 
 			
 			i++;
@@ -73,9 +79,9 @@ void initialize_game(void)
 
 	for (int j = 0; j < 4; j++)
 	{
-		printf("%s %s\n",setupC1[j].question, setupC1[j].answer);
-		printf("%s %s\n",setupC2[j].question, setupC2[j].answer);
-		printf("%s %s\n",setupC3[j].question, setupC3[j].answer);
+		printf("%s %i\n",setupC1[j].question, setupC1[j].value);
+		printf("%s %i\n",setupC2[j].question, setupC2[j].value);
+		printf("%s %i\n",setupC3[j].question, setupC3[j].value);
 	}
 
     //printf("%s\n%s\n%s\n%i\n%i\n", jayZ.questionCategory, jayZ.question, jayZ.answer, jayZ.score, jayZ.isAnswered);
