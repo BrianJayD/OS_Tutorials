@@ -57,17 +57,14 @@ int main(int argc, char const *argv[])
     c = getchar();
 	}while(c != EOF && c != '\n');
 
-	//EVERYTHING BELOW THIS LINE DOES NOT RUN
-
-
 	initialize_game();
 	startPlayer = rand() % players;
 	turn = startPlayer;
 	char catSelect[256];
-	
-	printf("%s starts.\n", playerSetup[turn].name);
 
-	do 
+	printf("%s starts.\n", playerSetup[turn].name);
+	display_categories();
+	do
 	{
 		printf("%s, please enter in a category and price: ", playerSetup[turn].name);
 		fgets(catSelect, BUFFER_LEN, stdin);
@@ -75,10 +72,10 @@ int main(int argc, char const *argv[])
 		int price = atoi(strtok(NULL, " "));
 		printf("You have chosen %s for %i\n", category, price);
 		displaythequestion(category, price);
-		
 
-		turn++; 
-		
+
+		turn++;
+
 
 		if (turn > players)
 		{
@@ -98,5 +95,3 @@ int main(int argc, char const *argv[])
 
 	return 0;
 }
-
-

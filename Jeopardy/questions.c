@@ -13,7 +13,7 @@
 
 
 
-struct gameinfo 
+struct gameinfo
 {
 	char* questionCategory;
 	char* question;
@@ -24,7 +24,7 @@ struct gameinfo
 
 char* gameCategories[3] = {"Celebs", "Movies", "Games"};
 char* cat1Questions[4] = {"q1","q2","q3","q4"};
-char* cat1Answers[4] = {"a1","a2","a3","a4"}; 
+char* cat1Answers[4] = {"a1","a2","a3","a4"};
 char* cat2Questions[4] = {"q5","q6","q7","q8"};
 char* cat2Answers[4] = {"a5","a6","a7","a8"};
 char* cat3Questions[4] = {"q9","q10","q11","q12"};
@@ -47,17 +47,17 @@ bool isGameFinished();
 void initialize_game(void)
 {
     // initialize each question struct and assign it to the questions array
-    
+
     int i = 0;
 
 	for (int c = 0; c < 3; c++)
 	{
 		initialsetup[i].questionCategory = gameCategories[c];
-		
-		
+
+
 		for (int q = 0; q < 4; q++)
 		{
-			
+
 			setupC1[i].question = cat1Questions[q];
 			setupC1[i].answer = cat1Answers[q];
 			setupC1[i].value = questionValues[q];
@@ -73,19 +73,29 @@ void initialize_game(void)
 			setupC3[i].value = questionValues[q];
 			setupC3[i].isAnswered = wasQuestionAnswered[q];
 
-			
+
 			i++;
 		}
 	}
 }
 
 
-/*
+
 // Displays each of the remaining categories and question dollar values that have not been answered
-void display_categories(void)
-{/
+void display_categories(void) {
+		printf("\n");
     // print categories and dollar values for each unanswered question in questions array
-}*/
+		for (int i = 0; i < 3; i++) {
+			printf("%s	", gameCategories[i]);
+		}
+		printf("\n");
+		for (int j = 3; j > -1; j--) {
+			for (int k = 0; k < 3; k ++) {
+				printf("%d	", questionValues[j]);
+			}
+			printf("\n\n");
+		}
+}
 
 // Displays the question for the category and dollar value
 void displaythequestion(char* category, int value)
@@ -100,7 +110,7 @@ void displaythequestion(char* category, int value)
 	{
 		initialsetup[i].questionCategory = gameCategories[i];
 		compare = initialsetup[i].questionCategory;
-		
+
 		if (strcmp(category, compare) == 0)
 		{
 			failtofind = 1;
@@ -137,7 +147,7 @@ void displaythequestion(char* category, int value)
 
 	}
 
-	
+
 	return;
 
 }
@@ -179,14 +189,14 @@ int valid_answer(char *category, int value, char *answer)
 			return value * -1;
 		}
 
-   
+
 }
 */
 
 // Returns true if the question has already been answered
 void already_answered(char *category, int value)
 {
-	int questionDisplayed = (value / 100) - 1;	
+	int questionDisplayed = (value / 100) - 1;
 		if (strcmp(category, "Celebs") == 0 && setupC1[questionDisplayed].isAnswered == 0)
 		{
 			setupC1[questionDisplayed].isAnswered = 1;
@@ -216,9 +226,9 @@ void already_answered(char *category, int value)
 		{
 			printf("Error! That question was already answered\n");
 		}
-	
+
     // lookup the question and see if it's already been marked as answered
-    
+
 }
 
 bool isGameFinished()
@@ -233,4 +243,3 @@ bool isGameFinished()
 
 	return true;
 }
-
