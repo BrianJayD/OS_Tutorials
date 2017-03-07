@@ -1,0 +1,17 @@
+1.When a process creates a copy of itself. Where a parent process creates a
+  child process and waits till the child process has finished to join. This
+  differs from multithreads because multithreads can run at the same time while
+  forked parent processes are required to wait for the child processes to change
+  before completing.
+
+2.Inter-process comminication allows system processes to communicate and share
+  data between each other. Using mutex locks, signals and barriers are some
+  of the methods for IPC.
+
+3.Semiphores are abstract data that controls access to a resource by all processes.
+  Mutexes are when threads that are in a controlled section and accessing a
+  resource that is to be used in other threads. When a thread is in a controlled
+  section, all other threads must wait for the thread to finish its controlled
+  section in order to access the resource.
+
+4.
