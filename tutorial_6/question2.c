@@ -3,12 +3,12 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <unistd.h>
 #include <time.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
 void spawn_n_procs(int n);
-void waitFor(unsigned int secs);
 
 void spawn_n_procs(int n) {
 	pid_t pid, c_pid;
