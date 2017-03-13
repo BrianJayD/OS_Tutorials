@@ -8,13 +8,7 @@
 
 void spawn_n_procs(int n);
 void write_ipc_file();
-void waitFor(unsigned int secs);
 void read_ipc_file();
-
-void waitFor (unsigned int secs) {
-	unsigned int retTime = time(0) + secs;   // Get finishing time.
-	while (time(0) < retTime);               // Loop until it arrives.
-}
 
 void spawn_n_procs(int n) {
 	pid_t pid;
@@ -22,7 +16,7 @@ void spawn_n_procs(int n) {
 		pid = fork();
 		if (pid) {
 			//launch something
-			waitFor(1); // waits for 1 second
+			sleep(1); // waits for 1 second
 			read_ipc_file(i + 1);
 			continue;
 		} else if (pid == 0) {
