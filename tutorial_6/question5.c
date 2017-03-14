@@ -21,10 +21,10 @@ int total_sum = 0;
 void factorial(int n) {
 	sem_wait(&semaphore);
 	pthread_mutex_lock(&mutex_lock);
-	
+
 	int temp = 0;
 	temp = factorial_n(n);
-	printf("Entered %d, Fact Value: %d, Prev Sum: %d\n", n, temp, total_sum);
+	printf("Received %d, Fact Value: %d, Prev Sum: %d\n", n, temp, total_sum);
 	total_sum += temp;
 
 	pthread_mutex_unlock(&mutex_lock);
@@ -91,9 +91,13 @@ void spawn_n_procs(int n) {
 				printf("child exit status %d\n", WEXITSTATUS(status));
 				// printf("parent process\n");
 				sum_txt = fopen("sum.txt", "r");
-
-				while (fscanf(sum_txt, "%d", &read_sum) != EOF)
-					printf("TOTAL SUM: %d\n", read_sum);
+				if (sum_txt != NULL) {
+					while (fscanf(sum_txt, "%d", &read_sum) != EOF)
+						printf("TOTAL SUM: %d\n", read_sum);
+				} else {
+					printf("error opening sum.txt for reading\n");
+					exit(1);
+				}
 			}
 			//return to main
 			break;
