@@ -62,15 +62,14 @@ int main(void) {
 	proc_t *node = malloc(sizeof(proc_t));
 
 	FILE *process_file;
-	char * line = NULL;
+	char line[256];
 	size_t len = 0;
 	ssize_t read;
 
 	process_file = fopen("processes.txt", "r");
 	if (process_file != NULL) {
 		char *pt;
-
-		while ((read = getline(&line, &len, process_file)) != -1) {
+		while ( fgets (line, 256, process_file) != NULL) {
 			// printf("%s", line);
 			node = malloc(sizeof(proc_t));
 			pt = strtok (line, ",");
