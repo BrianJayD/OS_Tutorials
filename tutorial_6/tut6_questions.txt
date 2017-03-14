@@ -14,4 +14,16 @@
   section, all other threads must wait for the thread to finish its controlled
   section in order to access the resource.
 
-4.
+4.wait() - If there is at least one child process, the caller will be blocked until
+  the child processes exit, then the caller will resume.
+
+  signal() - If a signal is caught, the program will report any exceptional events
+  that happen to a process.
+
+5.sem_open() - Creates a connection between semaphore and process.
+  sem_close() - Indicates that the process is finished using the semaphore, as well
+  as deallocates the resources used by the system for the semaphore being used.
+  sem_destroy() - Gets rid of unnamed semaphores.
+  sem_init() - Initializes unnamed semaphore.
+  sem_wait() - Locks semaphore.
+  sem_post() - Unlocks semaphore.
