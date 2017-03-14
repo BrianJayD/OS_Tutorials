@@ -48,8 +48,7 @@ int main(void)
 	sem_init(&semaphore, 0, 5);
 	struct num_index *x[5];
 	int rc, temp;
-	for (int i = 0; i < 5; i++)
-	{
+	for (int i = 0; i < 5; i++){
 		// sem_wait(&semaphore);
 
 		x[i] = malloc(sizeof(struct num_index));
@@ -60,8 +59,7 @@ int main(void)
 		// &x[i]->value = temp;
 	}
 
-	for (int j = 0; j < 5; j++)
-	{
+	for (int j = 0; j < 5; j++){
 		rc = pthread_create(&threads[j], NULL, (void *(*)(void*))factorial, x[j]);
 		if (rc) {
 			printf("ERROR; return code from pthread_create() is %d\n", rc);

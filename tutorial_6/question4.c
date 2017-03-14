@@ -22,18 +22,17 @@ int index;
 
 
 void sleep_rand() {
-   struct timespec tv;
-  
-   int msec = (int)(((double)random() / INT_MAX) * 1000);
-  
-   tv.tv_sec = 0;
-   tv.tv_nsec = 1000000 * msec;
-  
-   if(nanosleep(&tv, NULL) == -1) {
-      perror("sleep error");
-   }
-}
+	struct timespec tv;
 
+	int msec = (int)(((double)random() / INT_MAX) * 1000);
+
+	tv.tv_sec = 0;
+	tv.tv_nsec = 1000000 * msec;
+
+	if (nanosleep(&tv, NULL) == -1) {
+		perror("sleep error");
+	}
+}
 
 void *producer(int array[]) {
 	int i = -1;
