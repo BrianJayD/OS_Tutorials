@@ -37,7 +37,6 @@ void push(proc_t *process) {
 	current->next->process = process;
 	current->next->next = NULL;
 
-	// printf("pushed %s %d\n", current->process->name, current->process->pid);
 }
 
 void print_list() {
@@ -58,7 +57,6 @@ void init_queue(proc_t *head_proc) {
 
 int main(void) {
 	Queue = malloc(sizeof(queue_t));
-	// Queue = malloc(sizeof(queue_t));
 	proc_t *node = malloc(sizeof(proc_t));
 
 	FILE *process_file;
@@ -70,7 +68,6 @@ int main(void) {
 	if (process_file != NULL) {
 		char *pt;
 		while ( fgets (line, 256, process_file) != NULL) {
-			// printf("%s", line);
 			node = malloc(sizeof(proc_t));
 			pt = strtok (line, ",");
 			strcpy(node->name, pt);

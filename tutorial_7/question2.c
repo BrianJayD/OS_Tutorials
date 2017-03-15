@@ -27,7 +27,7 @@ void print_list();
 void init_queue();
 proc_t pop();
 proc_t *delete_name(char *name);
-proc_t delete_pid(int pid);
+proc_t *delete_pid(int pid);
 void read_in_proc_file();
 
 void push(proc_t *process) {
@@ -38,7 +38,6 @@ void push(proc_t *process) {
 	current->next = malloc(sizeof(queue_t));
 	current->next->process = process;
 	current->next->next = NULL;
-	// printf("pushed %s %d\n", current->process->name, current->process->pid);
 }
 
 proc_t pop() {
@@ -52,41 +51,68 @@ proc_t pop() {
 	return *ret_node;
 }
 
-//NO WORK
-proc_t delete_pid(int pid) {
-	proc_t *ret_node = NULL;
-	return *ret_node;
+proc_t* delete_process(queue_t** get_rid_of_this_one, queue_t* previous_one) {
+	// remove from queue structure
+	if(previous_one != NULL)
+		previous_one->next = (*get_rid_of_this_one)->next;
+
+  // save the process before you delete the node for sure
+	proc_t* process = (*get_rid_of_this_one)->process;
+	free(*get_rid_of_this_one);
+	return process;
 }
 
-//NO WORK
-proc_t *delete_name(char *name) {
-	proc_t *ret_node = NULL;
-	// queue_t *temp = NULL;
-	// queue_t *current_node = Queue;
+//YES WORK
+proc_t *delete_pid(int pid) {
+	if(Queue == NULL)
+		return NULL;
 
-	// while (current_node != NULL) {
-	// 	if (strcmp(name, current_node->process->name) != 0) {
-	// 		temp = current_node->next;
-	// 		current_node->next = temp->next;
-	// 	} else {
-	// 		printf("test\n");
-	// 		temp = current_node->next;
-	// 		ret_node = current_node->process;
-	// 		current_node->next->next = temp->next;
-	// 		free(temp);
-	// 		printf("\n>>found %s\n", ret_node->name);
-	// 		break;
-	// 	}
-	// }
-	// // Queue = next_node;
-	return ret_node;
+	queue_t *previous_node = NULL;
+	queue_t *current_node = Queue;
+	while(current_node->next != NULL) {
+		if(current_node->process->pid == pid) {
+			return delete_process(&current_node, previous_node);
+		}
+
+		// iterate
+		previous_node = current_node;
+		current_node = current_node->next;
+	}
+
+	// not found
+	return NULL;
+}
+
+//YES WORK.
+proc_t *delete_name(char *name) {
+	if(Queue == NULL)
+		return NULL;
+
+	queue_t *previous_node = NULL;
+	queue_t *current_node = Queue;
+	while(current_node->next != NULL) {
+		if(strcmp(name, current_node->process->name) == 0) {
+			return delete_process(&current_node, previous_node);
+		}
+
+		// iterate
+		previous_node = current_node;
+		current_node = current_node->next;
+	}
+
+	// not found
+	return NULL;
+}
+
+void print_process(proc_t* current) {
+	printf("%s, %d, %d, %d\n", current->name, current->priority, current->pid, current->runtime);
 }
 
 void print_list() {
 	queue_t *current = Queue;
 
 	while (current != NULL) {
-		printf("%s, %d, %d, %d\n", current->process->name, current->process->priority, current->process->pid, current->process->runtime);
+		print_process(current->process);
 		current = current->next;
 	}
 }
@@ -98,7 +124,7 @@ void init_queue(proc_t *head_proc) {
 }
 
 void read_in_proc_file() {
-	proc_t *node = malloc(sizeof(proc_t));
+	proc_t *node;
 	FILE *process_file;
 	char line[256];
 
@@ -136,15 +162,22 @@ void read_in_proc_file() {
 }
 
 int main(void) {
+	// read in the queue
 	Queue = malloc(sizeof(queue_t));
-	proc_t *x = NULL;
-
 	read_in_proc_file();
-
-
 	print_list();
-	x = delete_name("emacs");
+
+	// delete & print emacs
+	proc_t *emacs = delete_name("emacs");
+	proc_t *the_pid_one = delete_pid(12235);
 	printf("\nafter delete\n");
 	print_list();
 
+	// print stuff
+	printf("we found these procs:\n");
+	print_process(emacs);
+	print_process(the_pid_one);
+
+	// ok that's it
+	return 0;
 }
