@@ -7,50 +7,32 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#define N 5
-#define RED   "\x1B[31m"
-#define BLU   "\x1B[34m"
-#define RESET "\x1B[0m"
+int main(void){
 
-#ifndef TRUE
-#define TRUE 1
-#endif
-
-#ifndef FALSE
-#define FALSE 0
-#endif
-
-void SIGINT_handler(int);
-static void SignalHandler(int);
-static int signal_SIGINT = FALSE;
-
-int main(void) {
-  pid_t pid = fork();
 	int status;
-	int i;
-	signal(SIGINT, SignalHandler);
+	pid_t pid;
 
-	for (i = 0; i < N; i++) {
-		if (pid == 0) {
-			printf("pid=" BLU "%d" RESET " alive for " BLU "%d" RESET " seconds.\n", getpid(), i);
-			sleep(5);
-			if (signal_SIGINT) {
-				printf(RED "%7d; tick %d" RESET "\n", (int) pid, i);
-				exit(1);
-			}
-		} else {
-			waitpid(pid, &status, 0);
-			printf("We are parent\n");
-			kill(pid, SIGKILL);
-		}
+	pid = fork();
+
+	// Execute process
+	if (pid == 0)
+	{
+			execl("process", "process", NULL);
+			fprintf(stderr, "Ok well we tried (please make the 'process' executable)\n");
+			return -1;
 	}
 
-}
+	// Control process
+	else if (pid > 0)
+	{
+		// give it 5 seconds before you interrupt.
+		sleep(5);
+		kill(pid, SIGINT);
+	}
 
-void SIGINT_handler(int sig) {
-     printf(RED "From SIGINT: just got a %d (SIGINT ^C) signal\n" RESET, sig);
-}
-
-static void SignalHandler(int sig) {
-	signal_SIGINT = TRUE;
+	// No fork can't eat food ;C
+	else if (pid < 0)
+	{
+		printf("error!");
+	}
 }
