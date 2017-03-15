@@ -19,6 +19,8 @@ void read_in_proc_file(queue_t* Queue) {
 	proc_t *node;
 	FILE *process_file;
 	char line[256];
+	size_t len = 0;
+	ssize_t read;
 
 	process_file = fopen("processes.txt", "r");
 	if (process_file != NULL) {
@@ -41,12 +43,15 @@ void read_in_proc_file(queue_t* Queue) {
 			int c = atoi(pt);
 			node->runtime = c;
 
-			if (Queue->process == NULL) {
+			if (Queue->process == NULL)
+			{
 				init_queue_for_first_thing_cause_yeah(Queue, node);
 			} else {
 				push(node);
 			}
 		}
+
+
 	} else {
 		printf("error opening sum.txt for reading\n");
 		exit(1);
