@@ -1,42 +1,23 @@
 CC := clang
-CFLAGS := -std=c99 -Wall
-CPPFLAGS:=
-LFLAGS =
-LIBS :=
-# SOURCES := question1.c question2.c question3.c question4.c question5.c
+CFLAGS := -Wall -Wextra -std=c99
+SOURCES := question5.c question4.c question3.c question2.c question1.c queue.c
+DEPS = queue.o
 OBJECTS := $(subst .c,.o,$(SOURCES))
-BIN = question1 question2 question3 question4 question5 process
-.PHONY: clean all default
-
-default : all
+BIN := question5 question4 question3 question2 question1 process
+.PHONY: clean all
 
 all : $(BIN)
 
 process : sigtrap.c
 	clang -std=gnu99 $< -o $@
 
-question1 : question1.o
-	$(CC) $(CFLAGS) $< -o $@
+% : %.o
+	$(CC) $(DEPS) $(CFLAGS) $< -o $@
 
-question2 : question2.o
-	$(CC) $(CFLAGS) $< -o $@
+%.o : %.c
+	$(CC) $(CFLAGS) -c $<
 
-question3 : question3.o
-	$(CC) $(CFLAGS) $< -o $@
-
-question4 : question4.o
-	$(CC) $(CFLAGS) $< -o $@
-
-question5 : question5.o
-	$(CC) $(CFLAGS) $< -o $@
-
-
-# % : %.o
-# 	$(CC) $(CFLAGS) $< $(LIBS) -o $@
-
-# %.o : %.c
-# 	$(CC) $(CFLAGS) -c $<
-
+$(BIN) : $(OBJECTS)
 
 clean:
 	rm -f $(OBJECTS) $(BIN) *~
