@@ -1,18 +1,11 @@
-#include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>
-#include <unistd.h>
+#include <string.h>
 #include <signal.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+#include <unistd.h>
 
-int main(void){
-
-	int status;
-	pid_t pid;
-
-	pid = fork();
+int main(void) {
+	pid_t pid = fork();
 
 	// Execute process
 	if (pid == 0)

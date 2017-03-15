@@ -1,19 +1,11 @@
-#include <stddef.h>
-#include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>
-#include <unistd.h>
 #include <signal.h>
-#include <sys/types.h>
+#include <unistd.h>
 #include <sys/wait.h>
 
 int main(void) {
-	int status;
-	pid_t pid;
-
-	pid = fork();
-
 	// Execute process
+	pid_t pid = fork();
 	if (pid == 0)
 	{
 			execl("process", "process", "10", NULL);

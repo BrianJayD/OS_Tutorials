@@ -1,5 +1,5 @@
 CC := clang
-CFLAGS := -Wall -Wextra -std=c99
+CFLAGS := -Wall -Wextra -std=gnu99
 SOURCES := question5.c question4.c question3.c question2.c question1.c queue.c
 DEPS = queue.o
 OBJECTS := $(subst .c,.o,$(SOURCES))

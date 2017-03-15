@@ -1,11 +1,5 @@
-#include <stddef.h>
-#include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>
-#include <unistd.h>
-#include <signal.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+#include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 #include "queue.h"
@@ -23,14 +17,17 @@ void push(proc_t *process) {
 }
 
 proc_t pop() {
-	proc_t *ret_node = NULL;
-	queue_t *next_node = Queue->next;
-
-	if (Queue->process != NULL) {
-		ret_node = Queue->process;
-		Queue = next_node;
+  // pop the front node, while retrieving process address.
+	proc_t *found_proc = NULL;
+	if (Queue != NULL) {
+		found_proc = Queue->process;
+		Queue = Queue->next;
 	}
-	return *ret_node;
+
+  // make copy for return; then free memory used by process.
+  proc_t process = *found_proc;
+  free(found_proc);
+	return process;
 }
 
 proc_t* delete_process(queue_t** get_rid_of_this_one, queue_t* previous_one) {

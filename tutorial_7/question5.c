@@ -1,13 +1,11 @@
-#include <stddef.h>
+#include <assert.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>
-#include <unistd.h>
-#include <signal.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include <string.h>
-#include <assert.h>
+#include <signal.h>
+#include <unistd.h>
+#include <sys/wait.h>
 #include "queue.h"
 
 void read_in_proc_file(queue_t* head, FILE* file) {
@@ -38,23 +36,37 @@ void read_in_proc_file(queue_t* head, FILE* file) {
 	}
 }
 
-queue_t* get_node_of_priority(queue_t* head, bool want_zero_priority) {
-	return head;
-/*
-		// iterate over all nodes
-		while(head != NULL) {
-			if(head->process->priority == 0)
-			//if(false && false)
-				return head;
-			head = head->next;
-		}
-		return NULL;
-		*/
+queue_t* get_node_of_priority_zero(queue_t* head) {
+	// iterate over all nodes
+	while(head != NULL) {
+		if(head->process->priority == 0)
+			return head;
+		head = head->next;
+	}
+	return NULL;
 }
 
 // returns NULL if we done
 queue_t* get_next_process_node(queue_t* head) {
-	return get_node_of_priority(head, true);
+	queue_t* node = get_node_of_priority_zero(head);
+	return node ? node : head;
+}
+
+void launch_process(proc_t* process) {
+	pid_t pid = fork();
+	if(pid == 0) { // child
+		execl("process", "process", NULL);
+	} else if (pid > 0) { // parent
+		process->pid = pid;
+		sleep(process->runtime);
+		kill(process->pid, SIGINT);
+		waitpid(process->pid, NULL, 0);
+		print_process(process);
+	} else {
+		fprintf(stderr, "Oh well uh this one failed to launch OOPS: ");
+		print_process(process);
+		exit(EXIT_FAILURE);
+	}
 }
 
 int main(void){
@@ -74,12 +86,8 @@ int main(void){
 	// iterate over procs
 	queue_t* current_node;
 	while((current_node = get_next_process_node(*head)) != NULL) {
-		print_process(current_node->process);
-		//print_process(current_node->next->process);
 		proc_t* process = delete_name(current_node->process->name);
-		//printf("deleted: '%s' head: '%s'", process->name, (*head)->process->name);
-		//printf("-> '%s'\n", (*head)->next == NULL ? "null" : (*head)->next->process->name);
-		assert(process != NULL);
+		launch_process(process);
 	}
 
 	// done
