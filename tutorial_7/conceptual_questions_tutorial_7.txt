@@ -1,26 +1,36 @@
-1. Signals are asynchronous events sent to processes and threads. 
-Their purpose is to innterupt the current event that the process/thread 
-is doing and give it another event to do. 
+1. Signals are asynchronous events sent to processes and threads.
+  Their purpose is to interrupt the current event that the process/thread
+  is doing, then be delegated to a signal handler.
 
 
-2. SIGINT sends a signal to interrupt the process, causing it to terminate.
-SIGSTP causes a process to suspend its current action, for where it can either continue
-or be terminated, determined by the next signal sent. 
-SIGCONT allows a suspened process to continue executing.
+2.  SIGINT interrupt signal that causes termination.
+    SIGTSTP signal that causes a process to become suspended.
+    SIGCONT continue signal indicating that a stopped process may continue
+            executing.
+    All of these signals may be caught and responded to via a handler function.
 
 
-3. The kill() system call terminates any process that it is sent to. Once initiated,
-it cannot be handled by the user. The waitpid() system call waits for a process to
-change states before it executes its command.
+3.  kill() is used to send signals to processes. waitpid() waits for a
+    process to terminate. In order to close and wait for a process with id 'pid'
+    to finish, go like
+      kill(SIGINT, pid);
+      waitpid(pid, NULL, 0);
 
+4. A linked list is a set of nodes which contain some sort of information in a
+  program. For a queue, the nodes are added in a FIFO order. This means First In
+  First Out. The first node added to the linked list will be the first node to
+  leave the linked list. Some functions that are required for a linked list are:
+    push() which adds a new node to the end of the list,
+    pop() which removes the first node from the linked list.
 
-4. A linked list is a set of nodes which contain some sort of information in a 
-program. For a queue, the nodes are added in a FIFO order. This means First In First out.
-The first node added to the linked list will be the first node to leave the linked list. 
-Some functions that are required for a linked list are: push() which adds a new node to the list, 
-and pop() which removes the first node from the linked list.
-
-5. The strcture of a linked list usually has a struct which creates nodes which hold a type of informatiom.
-They also usually contain two needed functions: a push() and a pop(). Push() adds a node into the linked 
-list, and pop takes away a node from the linked list. The node that's removed depends on how the linked list 
-is implemented. For FIFO, the first node added is removed. For FILO, the last node is removed.
+5. Each node of the queue contains a pointer to the next node, and its
+   encapsulated data. Appending an element to the queue involves iterating
+   through nodes using their 'next' pointers until next is found to be NULL.
+   The new node may then be created, and becomes the value of 'next'.
+   To remove a value from the queue, iterate through nodes until the target is
+   found. While iterating, keep track of the previous node. This is needed in
+   order to update the overall flow of the queue. At the point of deletion,
+   set the previous node, if it exists, to the value of the found node's next.
+   This stitches the queue on both sides of the target together. When popping
+   from the queue, it is also important to update the head pointer to it's next
+   value.
