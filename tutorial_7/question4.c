@@ -42,7 +42,7 @@ int main(void){
 			sleep(1);
 		
 		}
-		signal(SIGTSTP, pid);
+		signal(SIGTSTP, (void *)(size_t)pid);
 		printf(WHITE"child process continued\n");
 		
 	}
@@ -51,7 +51,7 @@ int main(void){
 	{
 
 		waitpid(pid, &status, 0);
-		signal(SIGCONT, pid);
+		signal(SIGCONT, (void*)(size_t)pid);
 		printf(WHITE"Parent Process\n");
 	}
 
