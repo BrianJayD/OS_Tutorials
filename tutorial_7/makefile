@@ -13,22 +13,22 @@ default : all
 all : $(BIN)
 
 process : sigtrap.c
-	clang -std=gnu99 sigtrap.c -o process
+	clang -std=gnu99 $< -o $@ 
 
 question1 : question1.o
-	$(CC) $(CFLAGS) -o question1 question1.o 
+	$(CC) $(CFLAGS) $< -o $@ 
 
 question2 : question2.o
-	$(CC) $(CFLAGS) -o question2 question2.o 
+	$(CC) $(CFLAGS) $< -o $@ 
 
 question3 : question3.o
-	$(CC) $(CFLAGS) -o question3 question3.o 
+	$(CC) $(CFLAGS) $< -o $@  
 
 question4 : question4.o
-	$(CC) $(CFLAGS) -o question4 question4.o 
+	$(CC) $(CFLAGS) $< -o $@  
 
 question5 : question5.o
-	$(CC) $(CFLAGS) -o question5 question5.o
+	$(CC) $(CFLAGS) $< -o $@ 
 
 
 # % : %.o
