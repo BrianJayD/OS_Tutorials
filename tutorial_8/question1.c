@@ -26,15 +26,11 @@ typedef struct node {
 } node_t;
 
 node_t* init();
-void insert(node_t *head, int data);
+void insert(node_t *head, proc_t *data);
 void print_tree(node_t *head);
 void printDFS(node_t *head);
 
-void proc_insert(proc_t *head, proc_t *target);
-
-
 node_t *proc_tree;
-
 
 node_t* init() {
 	node_t *new_node = (node_t*)malloc(sizeof(node_t));
@@ -45,25 +41,25 @@ node_t* init() {
 	return new_node;
 }
 
-void insert(node_t *tree, int val) {
+void insert(node_t *tree, proc_t *target) {
 	if (tree->data == NULL) {
 		tree->data = (proc_t*)malloc(sizeof(proc_t));
-		tree->data->val = val;
-	} else if (val < tree->data->val) {
+		tree->data = target;
+	} else if (target->val < tree->data->val) {
 		if (tree->left != NULL) {
-			insert(tree->left, val);
+			insert(tree->left, target);
 		} else {
 			tree->left = malloc(sizeof(node_t));
 			tree->left->data = (proc_t*)malloc(sizeof(proc_t));
-			tree->left->data->val = val;
+			tree->left->data = target;
 		}
-	} else if (val >= tree->data->val) {
+	} else if (target->val >= tree->data->val) {
 		if (tree->right != NULL) {
-			insert(tree->right, val);
+			insert(tree->right, target);
 		} else {
 			tree->right = malloc(sizeof(node_t));
 			tree->right->data = (proc_t*)malloc(sizeof(proc_t));
-			tree->right->data->val = val;
+			tree->right->data = target;
 		}
 	}
 }
@@ -94,13 +90,18 @@ void printDFS(node_t * current) {
 int main() {
 	proc_tree = init();
 
-	insert(proc_tree, 1);
-	insert(proc_tree, 2);
-	insert(proc_tree, 8);
-	insert(proc_tree, 5);
-	insert(proc_tree, 0);
-	insert(proc_tree, 3);
+	proc_t *temp = (proc_t*)malloc(sizeof(proc_t));
+	proc_t *temp1 = (proc_t*)malloc(sizeof(proc_t));
+	proc_t *temp2 = (proc_t*)malloc(sizeof(proc_t));
 
+
+	temp->val = 1;
+	insert(proc_tree, temp);
+	temp1->val = 6;
+	insert(proc_tree, temp1);
+	temp2->val = 9;
+	insert(proc_tree, temp2);
+	
 
 	printf("printing tree..\n");
 	print_tree(proc_tree);
