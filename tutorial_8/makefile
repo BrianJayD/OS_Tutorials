@@ -1,8 +1,8 @@
 CC := clang
 CFLAGS := -std=gnu99
-SOURCES := question2.c question1.c 
-DEPS = 
-# OBJECTS := $(subst .c,.o,$(SOURCES))
+SOURCES := question2.c question1.c queue.c
+DEPS = queue.o
+OBJECTS := $(subst .c,.o,$(SOURCES))
 BIN := question2 question1 process
 .PHONY: clean all
 
