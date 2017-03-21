@@ -6,7 +6,10 @@ typedef struct proc {
 	char name[256];
 	int priority;
 	int pid;
+	int address;
+	int memory;
 	int runtime;
+	bool suspended;
 } proc_t;
 
 /// Queue linked-list node.
@@ -21,7 +24,7 @@ typedef struct queue {
 proc_t* delete_process(queue_t** get_rid_of_this_one, queue_t* previous_one);
 
 /// Adds process to end of the process queue.
-void push(proc_t *process);
+void push(queue_t **target, proc_t *process);
 
 /// Prints the process queue.
 void print_list();

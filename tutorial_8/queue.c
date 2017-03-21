@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <stdbool.h>
 #include "queue.h"
 
 queue_t *Queue = NULL;
 
-void push(proc_t *process) {
-	queue_t *current = Queue;
+void push(queue_t **target, proc_t *process) {
+	queue_t *current = *target;
 	while (current->next != NULL) {
 		current = current->next;
 	}
@@ -93,7 +94,7 @@ proc_t *delete_name(char *name) {
 }
 
 void print_process(proc_t* current) {
-	printf("%s, %d, %d, %d\n", current->name, current->priority, current->pid, current->runtime);
+	printf("%s, %d, %d, %d, %d, %d, %d\n", current->name, current->priority, current->pid, current->address, current->memory, current->runtime, current->suspended);
 }
 
 void print_list() {
