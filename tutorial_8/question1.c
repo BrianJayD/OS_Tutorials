@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include <unistd.h>
 #include <signal.h>
 #include <sys/types.h>
@@ -98,10 +99,10 @@ void read_file() {
 			proc_t *temp = malloc(sizeof(proc_t));
 
 			pt = strtok (line, ",");
-			strcpy(temp->parent, pt);
+			strcpy((char*)temp->parent, pt);
 
 			pt = strtok (NULL, ",");
-			strcpy(temp->name, pt);
+			strcpy((char*)temp->name, pt);
 
 			pt = strtok (NULL, ",");
 			temp->priority = atoi(pt);
