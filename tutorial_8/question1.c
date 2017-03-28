@@ -15,8 +15,8 @@
 /// Process structure.
 /// Contains cool process data.
 typedef	struct proc	{
-	char *parent[256];
-	char *name[256];
+	char parent[256];
+	char name[256];
 	int priority;
 	int memory;
 } proc_t;
@@ -86,15 +86,15 @@ void insert(node_t *tree, proc_t *target) {
 void print_tree(node_t * current) {
 	// print parent data
 	if (current != NULL)
-		printf("\nParent: %d, ", current->data->priority);
+		printf("\n%s (%d)", current->data->name, current->data->priority);
 
 	// Note existence of left child
 	if (current->left != NULL)
-		printf("L child: %d, ", current->left->data->priority);
+		printf(", L child: %s", current->left->data->name);
 
 	// Note existence of right child
 	if (current->right != NULL)
-		printf("R child: %d,", current->right->data->priority);
+		printf(", R child: %s", current->right->data->name);
 
 	// now print children stuff
 	if (current->left != NULL)
@@ -124,10 +124,10 @@ void read_file(node_t* head) {
 			proc_t *temp = malloc(sizeof(proc_t));
 
 			pt = strtok (line, ",");
-			strcpy((char*)temp->parent, pt);
+			strcpy(temp->parent, pt);
 
 			pt = strtok (NULL, ",");
-			strcpy((char*)temp->name, pt);
+			strcpy(temp->name, pt);
 
 			pt = strtok (NULL, ",");
 			temp->priority = atoi(pt);
