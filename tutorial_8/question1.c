@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include <unistd.h>
 #include <signal.h>
 #include <sys/types.h>
@@ -11,41 +12,58 @@
 #include <semaphore.h>
 #include <time.h>
 
+/// Process structure.
+/// Contains cool process data.
 typedef	struct proc	{
-	char *parent[256];
-	char *name[256];
+	char parent[256];
+	char name[256];
 	int priority;
 	int memory;
 } proc_t;
 
+/// Tree node.
+/// It's a binary tree, you know.
 typedef struct node {
 	proc_t *data;
 	struct node *left;
 	struct node *right;
 } node_t;
 
+/// Returns the root node of a new binary tree.
 node_t* init();
-void insert(node_t *head, proc_t *data);
-void print_tree(node_t *head);
-void printDFS(node_t *head);
-void read_file();
 
-node_t *proc_tree;
+/// Stores process 'data' in a new node under head,
+/// In a sorted fashion.
+void insert(node_t *head, proc_t *data);
+
+/// Prints head and children under it.
+void print_tree(node_t *head);
+
+/// Outputs the results of a depth first search to stdout.
+void printDFS(node_t *head);
+
+/// It's gonna make a tree out of processes_tree.txt
+void read_file(node_t* head);
 
 node_t* init() {
+	// the tree is empty
 	node_t *new_node = (node_t*)malloc(sizeof(node_t));
 	new_node->left = NULL;
 	new_node->right = NULL;
 	new_node->data = NULL;
 
+	// be free
 	return new_node;
 }
 
 void insert(node_t *tree, proc_t *target) {
+	// figure out where target goes
 	if (tree->data == NULL) {
+		// here is good
 		tree->data = (proc_t*)malloc(sizeof(proc_t));
 		tree->data = target;
 	} else if (target->priority < tree->data->priority) {
+		// unimportant stuff goes to left side
 		if (tree->left != NULL) {
 			insert(tree->left, target);
 		} else {
@@ -54,6 +72,7 @@ void insert(node_t *tree, proc_t *target) {
 			tree->left->data = target;
 		}
 	} else if (target->priority >= tree->data->priority) {
+		// more important stuff goes to right side
 		if (tree->right != NULL) {
 			insert(tree->right, target);
 		} else {
@@ -65,12 +84,19 @@ void insert(node_t *tree, proc_t *target) {
 }
 
 void print_tree(node_t * current) {
+	// print parent data
 	if (current != NULL)
-		printf("\nParent: %d, ", current->data->priority);
+		printf("\n%s (%d)", current->data->name, current->data->priority);
+
+	// Note existence of left child
 	if (current->left != NULL)
-		printf("L child: %d, ", current->left->data->priority);
+		printf(", L child: %s", current->left->data->name);
+
+	// Note existence of right child
 	if (current->right != NULL)
-		printf("R child: %d,", current->right->data->priority);
+		printf(", R child: %s", current->right->data->name);
+
+	// now print children stuff
 	if (current->left != NULL)
 		print_tree(current->left);
 	if (current->right != NULL)
@@ -87,7 +113,7 @@ void printDFS(node_t * current) {
 		printDFS(current->right);
 }
 
-void read_file() {
+void read_file(node_t* head) {
 	FILE *process_file;
 	char line[256];
 
@@ -109,7 +135,7 @@ void read_file() {
 			pt = strtok (NULL, ",");
 			temp->memory = atoi(pt);
 
-			insert(proc_tree, temp);
+			insert(head, temp);
 		}
 
 	} else {
@@ -119,14 +145,14 @@ void read_file() {
 }
 
 int main() {
-	proc_tree = init();
+	node_t*	proc_tree = init();
 
 	// proc_t *temp = (proc_t*)malloc(sizeof(proc_t));
 	// proc_t *temp1 = (proc_t*)malloc(sizeof(proc_t));
 	// proc_t *temp2 = (proc_t*)malloc(sizeof(proc_t));
 
 
-	read_file();
+	read_file(proc_tree);
 	// temp->val = 1;
 	// insert(proc_tree, temp);
 	// temp1->val = 6;
