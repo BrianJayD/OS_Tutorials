@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -45,6 +46,9 @@ void printDFS(node_t *head);
 /// It's gonna make a tree out of processes_tree.txt
 void read_file(node_t* head);
 
+/// Find something
+node_t* dfsFind(node_t* head, const char* name);
+
 node_t* init() {
 	// the tree is empty
 	node_t *new_node = (node_t*)malloc(sizeof(node_t));
@@ -58,27 +62,31 @@ node_t* init() {
 
 void insert(node_t *tree, proc_t *target) {
 	// figure out where target goes
-	if (tree->data == NULL) {
-		// here is good
-		tree->data = (proc_t*)malloc(sizeof(proc_t));
-		tree->data = target;
-	} else if (target->priority < tree->data->priority) {
-		// unimportant stuff goes to left side
-		if (tree->left != NULL) {
-			insert(tree->left, target);
-		} else {
-			tree->left = malloc(sizeof(node_t));
-			tree->left->data = (proc_t*)malloc(sizeof(proc_t));
-			tree->left->data = target;
-		}
-	} else if (target->priority >= tree->data->priority) {
-		// more important stuff goes to right side
-		if (tree->right != NULL) {
-			insert(tree->right, target);
-		} else {
+	if (strcmp(target->parent, "NULL") == 0) {
+	 tree->data = (proc_t*)malloc(sizeof(proc_t));
+	 tree->data = target;
+ } else if (strcmp(tree->data->name, target->parent) == 0) {
+		// one of these has to be it, right?
+		if(tree->right == NULL) {
 			tree->right = malloc(sizeof(node_t));
 			tree->right->data = (proc_t*)malloc(sizeof(proc_t));
 			tree->right->data = target;
+		} else if (tree->left == NULL) {
+			tree->left = malloc(sizeof(node_t));
+			tree->left->data = (proc_t*)malloc(sizeof(proc_t));
+			tree->left->data = target;
+		} else {
+			assert(false);
+		}
+
+	} else {
+		node_t* node = dfsFind(tree, target->parent);
+		if(node == NULL) {
+			printf("unable to place '%s'->'%s' under '%s'\n", target->parent
+				, target->name, tree->data->name);
+			assert(false);
+		} else {
+			insert(node, target);
 		}
 	}
 }
@@ -105,7 +113,7 @@ void printDFS(node_t * current) {
 	if (current->left != NULL)
 		printDFS(current->left);
 	if (current != NULL)
-		printf("%d ", current->data->priority);
+		printf("%s ", current->data->name);
 	if (current->right != NULL)
 		printDFS(current->right);
 }
@@ -120,10 +128,10 @@ void read_file(node_t* head) {
 		while ( fgets (line, 256, process_file) != NULL) {
 			proc_t *temp = malloc(sizeof(proc_t));
 
-			pt = strtok (line, ",");
+			pt = strtok (line, ", ");
 			strcpy(temp->parent, pt);
 
-			pt = strtok (NULL, ",");
+			pt = strtok (NULL, ", ");
 			strcpy(temp->name, pt);
 
 			pt = strtok (NULL, ",");
@@ -141,22 +149,27 @@ void read_file(node_t* head) {
 	}
 }
 
+node_t* dfsFind(node_t* head, const char* name) {
+	if(head == NULL) {
+		return NULL;
+	} else if(strcmp(head->data->name, name) == 0) {
+		return head;
+	} else {
+		node_t* right = dfsFind(head->right, name);
+		node_t* left = dfsFind(head->left, name);
+		if(right != NULL)
+			return right;
+		if(left != NULL)
+			return left;
+		else
+			return NULL;
+	}
+}
+
 int main() {
 	node_t*	proc_tree = init();
 
-	// proc_t *temp = (proc_t*)malloc(sizeof(proc_t));
-	// proc_t *temp1 = (proc_t*)malloc(sizeof(proc_t));
-	// proc_t *temp2 = (proc_t*)malloc(sizeof(proc_t));
-
-
 	read_file(proc_tree);
-	// temp->val = 1;
-	// insert(proc_tree, temp);
-	// temp1->val = 6;
-	// insert(proc_tree, temp1);
-	// temp2->val = 9;
-	// insert(proc_tree, temp2);
-
 
 	printf("---\nprinting tree..\n---\n");
 	print_tree(proc_tree);
