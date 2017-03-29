@@ -5,8 +5,6 @@
 #include <stdbool.h>
 #include "queue.h"
 
-queue_t *Queue = NULL;
-
 void push(queue_t **target, proc_t *process) {
 	queue_t *current = *target;
 	while (current->next != NULL) {
@@ -17,12 +15,12 @@ void push(queue_t **target, proc_t *process) {
 	current->next->next = NULL;
 }
 
-proc_t pop() {
+proc_t pop(queue_t** head) {
   // pop the front node, while retrieving process address.
 	proc_t *found_proc = NULL;
-	if (Queue != NULL) {
-		found_proc = Queue->process;
-		Queue = Queue->next;
+	if (head != NULL) {
+		found_proc = (*head)->process;
+		*head = (*head)->next;
 	}
 
   // make copy for return; then free memory used by process.
@@ -31,15 +29,15 @@ proc_t pop() {
 	return process;
 }
 
-proc_t* delete_process(queue_t** get_rid_of_this_one, queue_t* previous_one) {
+proc_t* delete_process(queue_t** head, queue_t** get_rid_of_this_one, queue_t* previous_one) {
 	// remove from queue structure
 	if(previous_one != NULL) {// update that shit
     //printf("Previous one is for real %s\n", previous_one->process->name);
 		previous_one->next = (*get_rid_of_this_one)->next;
   } else {// this is head and queue so fix it
     //printf("reassign queue to queue->next: %s\n", (*get_rid_of_this_one)->process == NULL ? "<nothing>" : (*get_rid_of_this_one)->process->name);
-    assert(*get_rid_of_this_one == Queue);
-    Queue = Queue->next;
+    assert(*get_rid_of_this_one == *head);
+    *head = (*head)->next;
   }
 
   // save the process before you delete the node for sure
@@ -52,15 +50,15 @@ proc_t* delete_process(queue_t** get_rid_of_this_one, queue_t* previous_one) {
 }
 
 //YES WORK
-proc_t *delete_pid(int pid) {
-	if(Queue == NULL)
+proc_t *delete_pid(queue_t** head, int pid) {
+	if(*head == NULL)
 		return NULL;
 
 	queue_t *previous_node = NULL;
-	queue_t *current_node = Queue;
+	queue_t *current_node = *head;
 	while(current_node != NULL) {
 		if(current_node->process->pid == pid) {
-			return delete_process(&current_node, previous_node);
+			return delete_process(head, &current_node, previous_node);
 		}
 
 		// iterate
@@ -73,15 +71,15 @@ proc_t *delete_pid(int pid) {
 }
 
 //YES WORK.
-proc_t *delete_name(char *name) {
-	if(Queue == NULL)
+proc_t *delete_name(queue_t** head, char *name) {
+	if(*head == NULL)
 		return NULL;
 
 	queue_t *previous_node = NULL;
-	queue_t *current_node = Queue;
+	queue_t *current_node = *head;
 	while(current_node != NULL) {
 		if(strcmp(name, current_node->process->name) == 0) {
-			return delete_process(&current_node, previous_node);
+			return delete_process(head, &current_node, previous_node);
 		}
 
 		// iterate
@@ -97,12 +95,12 @@ void print_process(proc_t* current) {
 	printf("%s, %d, %d, %d, %d, %d, %d\n", current->name, current->priority, current->pid, current->address, current->memory, current->runtime, current->suspended);
 }
 
-void print_list() {
-  if(Queue == NULL) {
+void print_list(queue_t* head) {
+  if(head== NULL) {
     printf("<no processes in queue>\n");
     return;
   }
-	queue_t *current = Queue;
+	queue_t *current = head;
 
 	while (current != NULL) {
     if(current->process != NULL)
@@ -111,9 +109,4 @@ void print_list() {
       printf("%s\n", NULL);
 		current = current->next;
 	}
-}
-
-queue_t** init_queue(void) {
-	Queue = malloc(sizeof(queue_t));
-	return &Queue;
 }

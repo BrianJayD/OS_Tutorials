@@ -17,8 +17,7 @@
 void read_file();
 
 int main() {
-	queue_t** head = init_queue();
-
+	queue_t* head = malloc(sizeof(queue_t*));
 	read_file();
 }
 
