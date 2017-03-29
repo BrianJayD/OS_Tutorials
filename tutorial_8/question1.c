@@ -84,17 +84,14 @@ void insert(node_t *tree, proc_t *target) {
 }
 
 void print_tree(node_t * current) {
-	// print parent data
-	if (current != NULL)
-		printf("\n%s (%d)", current->data->name, current->data->priority);
-
-	// Note existence of left child
+	// Print stuff
+	printf("%s priority %d size %d (parent '%s'", current->data->name
+		, current->data->priority, current->data->memory, current->data->parent);
 	if (current->left != NULL)
-		printf(", L child: %s", current->left->data->name);
-
-	// Note existence of right child
+		printf(", L child: '%s'", current->left->data->name);
 	if (current->right != NULL)
-		printf(", R child: %s", current->right->data->name);
+		printf(", R child: '%s'", current->right->data->name);
+	printf(")\n");
 
 	// now print children stuff
 	if (current->left != NULL)
